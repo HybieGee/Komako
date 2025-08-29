@@ -1,4 +1,6 @@
 ---
+import { getLangFromUrl, useTranslations } from '@lib/i18n';
+
 export interface Props {
   title: string;
   slug: string;
@@ -8,10 +10,14 @@ export interface Props {
 }
 
 const { title, slug, cover, summary, photoCount = 0 } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const albumLink = lang === 'ja' ? `/ja/albums/${slug}` : `/albums/${slug}`;
+const photoText = lang === 'ja' ? `${photoCount}枚の写真` : `${photoCount} photos`;
 ---
 
 <article class="card group">
-  <a href={`/albums/${slug}`} class="block">
+  <a href={albumLink} class="block">
     <div class="relative aspect-video overflow-hidden rounded-lg">
       <img
         src={cover}
@@ -23,7 +29,7 @@ const { title, slug, cover, summary, photoCount = 0 } = Astro.props;
       <div class="absolute bottom-3 left-3 text-white">
         <h3 class="text-lg font-semibold">{title}</h3>
         {photoCount > 0 && (
-          <span class="text-sm opacity-90">{photoCount} photos</span>
+          <span class="text-sm opacity-90">{photoText}</span>
         )}
       </div>
     </div>

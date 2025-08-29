@@ -1,13 +1,48 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import GalleryGrid from '@components/GalleryGrid.astro';
-import Lightbox from '@components/Lightbox.astro';
-import { getPhotos } from '@lib/content';
+import Timeline from '@components/Timeline.astro';
+import type { TimelineItem } from '@components/Timeline.astro';
+import { getPhotos, getAlbums, getJournalPosts } from '@lib/content';
 import { useTranslations } from '@lib/i18n';
 
 const lang = 'ja';
 const t = useTranslations(lang);
+
 const photos = await getPhotos(lang);
+const albums = await getAlbums(lang);
+const posts = await getJournalPosts(lang);
+
+const timelineItems: TimelineItem[] = [
+  ...photos.map(photo => ({
+    date: photo.date,
+    title: photo.title,
+    description: photo.tags?.join(', '),
+    image: photo.image,
+    link: `/ja/photo/${photo.slug}`,
+    type: 'photo' as const,
+  })),
+  ...albums.map(album => ({
+    date: album.date || '2025-01-01',
+    title: album.title,
+    description: album.summary,
+    image: album.cover,
+    link: `/ja/albums/${album.slug}`,
+    type: 'album' as const,
+  })),
+  ...posts.map(post => ({
+    date: post.date,
+    title: post.title,
+    description: post.excerpt,
+    link: `/ja/journal/${post.slug}`,
+    type: 'journal' as const,
+  })),
+  {
+    date: '2021-03-26',
+    title: 'コマコが誕生しました！',
+    description: 'スコティッシュフォールドとの旅が始まります',
+    type: 'milestone' as const,
+  },
+].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
 <BaseLayout
@@ -15,19 +50,49 @@ const photos = await getPhotos(lang);
   description={t('timeline.subtitle')}
   lang={lang}
 >
-  <div class="container py-16">
-    <div class="text-center mb-16">
-      <h1 class="text-4xl md:text-5xl font-serif font-bold text-komako-eyes mb-4">
-        {t('timeline.title')}
-      </h1>
-      <p class="text-xl text-komako-soft max-w-2xl mx-auto">
+  <div class="container py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">{t('timeline.title')}</h1>
+      <p class="mt-2 text-komako-soft">
         {t('timeline.subtitle')}
       </p>
-      <div class="w-16 h-0.5 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto mt-6"></div>
+    </header>
+    
+    <Timeline items={timelineItems} />
+    
+    <div id="load-more-container" class="mt-8 text-center">
+      <button id="load-more" class="btn-secondary">
+        もっと読む
+      </button>
     </div>
-
-    <GalleryGrid photos={photos} />
   </div>
-  
-  <Lightbox />
 </BaseLayout>
+
+<script>
+  let visibleItems = 20;
+  const itemsPerLoad = 20;
+  const allTimelineItems = document.querySelectorAll('.timeline-item');
+  const loadMoreBtn = document.getElementById('load-more');
+  const loadMoreContainer = document.getElementById('load-more-container');
+  
+  function showItems() {
+    allTimelineItems.forEach((item, index) => {
+      if (index < visibleItems) {
+        (item as HTMLElement).style.display = 'flex';
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
+    });
+    
+    if (visibleItems >= allTimelineItems.length && loadMoreContainer) {
+      loadMoreContainer.style.display = 'none';
+    }
+  }
+  
+  loadMoreBtn?.addEventListener('click', () => {
+    visibleItems += itemsPerLoad;
+    showItems();
+  });
+  
+  showItems();
+</script>
