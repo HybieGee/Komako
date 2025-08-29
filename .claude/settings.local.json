@@ -13,7 +13,10 @@
       "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
       "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
       "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
-      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)"
+      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
+      "Bash(for i in {1..22})",
+      "Bash(do cp \"Pictures/Komako ($i).png\" \"public/images/2023/komako-$i.jpg\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

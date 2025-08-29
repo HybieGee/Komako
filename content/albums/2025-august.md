@@ -1,8 +1,8 @@
 ---
-title: "August 2025"
-slug: "2025-august"
-cover: "/images/2025/08/waiting-dinner.jpg"
-summary: "Warm afternoons and impatient dinners. A collection of Komako's daily moments during the Australian winter."
+title: "Recent Favorites"
+slug: "recent-favorites"
+cover: "/images/2023/komako-15.jpg"
+summary: "A collection of our most beloved recent captures showcasing Komako's personality and charm."
 lang: "en"
-date: "2025-08-01"
+date: "2023-12-01"
 ---
