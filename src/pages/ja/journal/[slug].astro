@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getJournalPosts } from '@lib/content';
+import { useTranslations } from '@lib/i18n';
+import type { GetStaticPaths } from 'astro';
+
+const lang = 'ja';
+const t = useTranslations(lang);
+
+export const getStaticPaths = (async () => {
+  const posts = await getJournalPosts('ja');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.date).toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.excerpt,
+  datePublished: post.date,
+  author: {
+    '@type': 'Person',
+    name: 'Komako\'s Human',
+  },
+};
+---
+
+<BaseLayout
+  title={`${post.title} - コマコギャラリー`}
+  description={post.excerpt}
+  lang={lang}
+>
+  <div class="container py-8">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-6">
+        <a
+          href="/ja/journal"
+          class="inline-flex items-center text-komako-soft hover:text-accent-rose transition-colors"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          ジャーナルに戻る
+        </a>
+      </div>
+      
+      <article class="space-y-8">
+        <header class="text-center">
+          <h1 class="text-3xl md:text-4xl font-bold text-komako-eyes mb-4">
+            {post.title}
+          </h1>
+          <div class="flex flex-wrap justify-center gap-4 text-sm text-komako-soft">
+            <time dateTime={post.date}>
+              {formattedDate}
+            </time>
+            {post.readTime && (
+              <span>{post.readTime.replace('min read', t('journal.readtime'))}</span>
+            )}
+          </div>
+        </header>
+        
+        {post.excerpt && (
+          <div class="text-center">
+            <p class="text-xl text-komako-cozy leading-relaxed max-w-2xl mx-auto">
+              {post.excerpt}
+            </p>
+          </div>
+        )}
+        
+        <div class="prose prose-lg mx-auto dark:prose-dark" set:html={post.content} />
+      </article>
+    </div>
+  </div>
+  
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

@@ -1,0 +1,107 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getPhotos } from '@lib/content';
+import { useTranslations } from '@lib/i18n';
+import type { GetStaticPaths } from 'astro';
+
+const lang = 'ja';
+const t = useTranslations(lang);
+
+export const getStaticPaths = (async () => {
+  const photos = await getPhotos('ja');
+  return photos.map((photo) => ({
+    params: { slug: photo.slug },
+    props: { photo },
+  }));
+}) satisfies GetStaticPaths;
+
+const { photo } = Astro.props;
+
+const formattedDate = new Date(photo.date).toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: 'long', 
+  day: 'numeric',
+});
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageObject',
+  name: photo.title,
+  description: photo.alt,
+  datePublished: photo.date,
+  contentUrl: new URL(photo.image, Astro.site),
+  author: {
+    '@type': 'Person',
+    name: 'Komako\'s Human',
+  },
+};
+---
+
+<BaseLayout
+  title={`${photo.title} - コマコギャラリー`}
+  description={photo.alt}
+  image={photo.image}
+  lang={lang}
+>
+  <div class="container py-8">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-6">
+        <a
+          href="/ja/"
+          class="inline-flex items-center text-komako-soft hover:text-accent-rose transition-colors"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          ギャラリーに戻る
+        </a>
+      </div>
+      
+      <article class="space-y-8">
+        <header class="text-center">
+          <h1 class="text-3xl md:text-4xl font-bold text-komako-eyes mb-4">
+            {photo.title}
+          </h1>
+          <div class="flex flex-wrap justify-center gap-4 text-sm text-komako-soft">
+            <time dateTime={photo.date}>
+              {formattedDate}
+            </time>
+            {photo.album && (
+              <span class="badge">
+                {photo.album}
+              </span>
+            )}
+          </div>
+        </header>
+        
+        <div class="text-center">
+          <img
+            src={photo.image}
+            alt={photo.alt}
+            class="mx-auto max-h-[70vh] w-auto rounded-xl shadow-lg"
+            loading="eager"
+          />
+        </div>
+        
+        {photo.content && (
+          <div class="prose prose-lg mx-auto dark:prose-dark" set:html={photo.content} />
+        )}
+        
+        {photo.tags && photo.tags.length > 0 && (
+          <div class="text-center">
+            <h3 class="text-lg font-semibold text-komako-eyes mb-4">タグ</h3>
+            <div class="flex flex-wrap justify-center gap-2">
+              {photo.tags.map((tag) => (
+                <span class="badge">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
+  </div>
+  
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

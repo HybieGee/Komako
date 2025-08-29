@@ -1,0 +1,80 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import GalleryGrid from '@components/GalleryGrid.astro';
+import Lightbox from '@components/Lightbox.astro';
+import { getPhotos, getAlbums } from '@lib/content';
+import { useTranslations } from '@lib/i18n';
+import type { GetStaticPaths } from 'astro';
+
+const lang = 'ja';
+const t = useTranslations(lang);
+
+export const getStaticPaths = (async () => {
+  const albums = await getAlbums('ja');
+  return albums.map((album) => ({
+    params: { slug: album.slug },
+    props: { album },
+  }));
+}) satisfies GetStaticPaths;
+
+const { album } = Astro.props;
+
+const allPhotos = await getPhotos(lang);
+const albumPhotos = allPhotos.filter(photo => photo.album === album.slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: album.title,
+  description: album.summary,
+  image: album.cover,
+  author: {
+    '@type': 'Person',
+    name: 'Komako\'s Human',
+  },
+};
+---
+
+<BaseLayout
+  title={`${album.title} - コマコギャラリー`}
+  description={album.summary}
+  image={album.cover}
+  lang={lang}
+>
+  <div class="container py-16">
+    <div class="text-center mb-16">
+      <div class="mb-6">
+        <a
+          href="/ja/albums"
+          class="inline-flex items-center text-komako-soft hover:text-accent-rose transition-colors"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          すべてのアルバムに戻る
+        </a>
+      </div>
+      
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-komako-eyes mb-4">
+        {album.title}
+      </h1>
+      {album.summary && (
+        <p class="text-xl text-komako-soft max-w-2xl mx-auto">
+          {album.summary}
+        </p>
+      )}
+      <div class="w-16 h-0.5 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto mt-6"></div>
+    </div>
+
+    {albumPhotos.length > 0 ? (
+      <GalleryGrid photos={albumPhotos} />
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-komako-soft">このアルバムには現在写真がありません。</p>
+      </div>
+    )}
+  </div>
+  
+  <Lightbox />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>
