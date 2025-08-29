@@ -1,9 +1,12 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import PostCard from '@components/PostCard.astro';
+import { getJournalPosts } from '@lib/content';
 import { useTranslations } from '@lib/i18n';
 
 const lang = 'ja';
 const t = useTranslations(lang);
+const posts = await getJournalPosts(lang);
 ---
 
 <BaseLayout
@@ -11,20 +14,24 @@ const t = useTranslations(lang);
   description={t('journal.subtitle')}
   lang={lang}
 >
-  <div class="container py-16">
-    <div class="text-center mb-16">
-      <h1 class="text-4xl md:text-5xl font-serif font-bold text-komako-eyes mb-4">
-        {t('journal.title')}
-      </h1>
-      <p class="text-xl text-komako-soft max-w-2xl mx-auto">
+  <div class="container py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">{t('journal.title')}</h1>
+      <p class="mt-2 text-komako-soft">
         {t('journal.subtitle')}
       </p>
-      <div class="w-16 h-0.5 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto mt-6"></div>
+    </header>
+    
+    <div class="space-y-6">
+      {posts.map((post) => (
+        <PostCard {...post} />
+      ))}
     </div>
-
-    <!-- Journal posts would be displayed here -->
-    <div class="max-w-4xl mx-auto space-y-8">
-      <!-- Journal post cards would go here -->
-    </div>
+    
+    {posts.length === 0 && (
+      <p class="text-komako-soft">
+        まだジャーナルエントリーがありません。もうしばらくお待ちください！
+      </p>
+    )}
   </div>
 </BaseLayout>
