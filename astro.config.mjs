@@ -23,5 +23,15 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ['sharp'],
     },
+    resolve: {
+      alias: {
+        '@components': '/src/components',
+        '@layouts': '/src/layouts',
+        '@lib': '/src/lib',
+        '@styles': '/src/styles',
+        '@content': '/content',
+        '@config': '/src/config',
+      },
+    },
   },
 });
