@@ -4,9 +4,9 @@ import GalleryGrid from '@components/GalleryGrid.astro';
 import Lightbox from '@components/Lightbox.astro';
 import ContractSection from '@components/ContractSection.astro';
 import { getPhotos } from '@lib/content';
-import { getLangFromUrl, useTranslations } from '@lib/i18n';
+import { useTranslations } from '@lib/i18n';
 
-const lang = getLangFromUrl(Astro.url);
+const lang = 'ja';
 const t = useTranslations(lang);
 
 const photos = await getPhotos(lang);
@@ -15,8 +15,9 @@ const preloadImages = featuredPhotos.slice(0, 6).map(photo => photo.image);
 ---
 
 <BaseLayout
-  title="Komako Gallery - Scottish Fold Cat Photography"
-  description="A beautiful gallery celebrating Komako, a Scottish Fold cat born March 26, 2021. Browse photos capturing her daily life and adorable moments."
+  title="コマコギャラリー - スコティッシュフォールドの猫の写真"
+  description="2021年3月26日生まれのスコティッシュフォールド、コマコを祝う美しいギャラリー。彼女の日常生活と愛らしい瞬間をご覧ください。"
+  lang={lang}
 >
   <!-- Preload critical images -->
   {preloadImages.map(src => (
@@ -49,7 +50,7 @@ const preloadImages = featuredPhotos.slice(0, 6).map(photo => photo.image);
           <a href="#gallery" class="btn-primary">
             {t('home.explore')}
           </a>
-          <a href={lang === 'ja' ? '/ja/about' : '/about'} class="btn-secondary">
+          <a href="/ja/about" class="btn-secondary">
             {t('home.about')}
           </a>
         </div>
@@ -70,7 +71,7 @@ const preloadImages = featuredPhotos.slice(0, 6).map(photo => photo.image);
       
       {photos.length > 20 && (
         <div class="text-center mt-12">
-          <a href={lang === 'ja' ? '/ja/timeline' : '/timeline'} class="btn-primary">
+          <a href="/ja/timeline" class="btn-primary">
             {t('home.viewall')}
           </a>
         </div>

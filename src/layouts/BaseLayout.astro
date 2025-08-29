@@ -1,20 +1,23 @@
 ---
 import '@styles/globals.css';
 import LangSwitcher from '@components/LangSwitcher.astro';
+import { getLangFromUrl, useTranslations, type Language } from '@lib/i18n';
 
 export interface Props {
   title?: string;
   description?: string;
   image?: string;
-  lang?: 'en' | 'ja';
+  lang?: Language;
   class?: string;
 }
+
+const lang = getLangFromUrl(Astro.url) || Astro.props.lang || 'en';
+const t = useTranslations(lang);
 
 const {
   title = 'Komako Gallery',
   description = 'A cozy gallery celebrating Komako, a Scottish Fold born March 26, 2021',
   image = '/og-default.jpg',
-  lang = 'en',
   class: className = '',
 } = Astro.props;
 
@@ -69,12 +72,12 @@ const socialImageURL = new URL(image, Astro.site);
         </a>
         
         <div class="flex items-center space-x-6">
-          <a href="/" class="nav-link">Gallery</a>
-          <a href="/timeline" class="nav-link">Timeline</a>
-          <a href="/albums" class="nav-link">Albums</a>
-          <a href="/journal" class="nav-link">Journal</a>
-          <a href="/about" class="nav-link">About</a>
-          <a href="/search" class="nav-link">Search</a>
+          <a href={lang === 'ja' ? '/ja' : '/'} class="nav-link">{t('nav.gallery')}</a>
+          <a href={lang === 'ja' ? '/ja/timeline' : '/timeline'} class="nav-link">{t('nav.timeline')}</a>
+          <a href={lang === 'ja' ? '/ja/albums' : '/albums'} class="nav-link">{t('nav.albums')}</a>
+          <a href={lang === 'ja' ? '/ja/journal' : '/journal'} class="nav-link">{t('nav.journal')}</a>
+          <a href={lang === 'ja' ? '/ja/about' : '/about'} class="nav-link">{t('nav.about')}</a>
+          <a href={lang === 'ja' ? '/ja/search' : '/search'} class="nav-link">{t('nav.search')}</a>
           <LangSwitcher lang={lang} />
         </div>
       </nav>
@@ -89,19 +92,19 @@ const socialImageURL = new URL(image, Astro.site);
         <div class="text-center space-y-4">
           <div class="max-w-md mx-auto">
             <p class="text-komako-soft font-medium mb-2">
-              A photographic celebration of Komako
+              {t('footer.tagline')}
             </p>
             <p class="text-sm text-komako-cozy">
-              © 2025 Komako Gallery • Scottish Fold Adventures
+              {t('footer.copyright')}
             </p>
           </div>
           
           <div class="flex flex-wrap justify-center gap-6">
             <a href="https://x.com/OnlyKomako" class="footer-link">
-              Twitter
+              {t('footer.twitter')}
             </a>
             <a href="/sitemap-index.xml" class="footer-link">
-              Sitemap
+              {t('footer.sitemap')}
             </a>
           </div>
           

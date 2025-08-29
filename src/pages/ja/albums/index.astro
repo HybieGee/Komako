@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { useTranslations } from '@lib/i18n';
+
+const lang = 'ja';
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  title={`${t('albums.title')} - コマコギャラリー`}
+  description={t('albums.subtitle')}
+  lang={lang}
+>
+  <div class="container py-16">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-serif font-bold text-komako-eyes mb-4">
+        {t('albums.title')}
+      </h1>
+      <p class="text-xl text-komako-soft max-w-2xl mx-auto">
+        {t('albums.subtitle')}
+      </p>
+      <div class="w-16 h-0.5 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto mt-6"></div>
+    </div>
+
+    <!-- Albums would be displayed here -->
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <!-- Album cards would go here -->
+    </div>
+  </div>
+</BaseLayout>

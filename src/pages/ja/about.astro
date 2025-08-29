@@ -1,0 +1,143 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { useTranslations } from '@lib/i18n';
+
+const lang = 'ja';
+const t = useTranslations(lang);
+
+const birthDate = new Date('2021-03-26');
+const today = new Date();
+const ageInMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + 
+                    (today.getMonth() - birthDate.getMonth());
+const years = Math.floor(ageInMonths / 12);
+const months = ageInMonths % 12;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Animal',
+    name: 'Komako',
+    birthDate: '2021-03-26',
+    breed: 'Scottish Fold',
+    description: 'オーストラリアのブリスベンに住む愛らしいスコティッシュフォールドの猫',
+    image: '/og-default.jpg',
+  },
+};
+---
+
+<BaseLayout
+  title="コマコについて - スコティッシュフォールドの猫"
+  description="2021年3月26日生まれのスコティッシュフォールド、コマコをご紹介します。彼女の性格、好きなもの、日常生活について学びましょう。"
+  lang={lang}
+>
+  <div class="container py-8">
+    <div class="mx-auto max-w-4xl">
+      <header class="mb-8 text-center">
+        <div class="mb-6">
+          <img src="/images/2021/komako-logo.jpg" alt="子猫のコマコのポートレート" class="w-32 h-32 rounded-full mx-auto object-cover shadow-lg" />
+        </div>
+        <h1 class="text-4xl font-bold">{t('about.title')}</h1>
+        <p class="mt-2 text-lg text-komako-soft">
+          {years}歳{months}ヶ月の純粋な喜び
+        </p>
+      </header>
+      
+      <div class="prose prose-lg mx-auto dark:prose-dark">
+        <section>
+          <h2>コマコとの出会い</h2>
+          <p>
+            2021年3月26日生まれのコマコは、オーストラリアのブリスベンにある私たちの家に
+            喜びと愛情をもたらしてくれているスコティッシュフォールドです。特徴的な折れ耳と
+            丸くて表情豊かな目で、どこに行っても人々の心を掴みます。
+          </p>
+        </section>
+        
+        <section>
+          <h2>性格</h2>
+          <p>
+            コマコは遊び好きでありながら穏やかな性格の完璧なブレンドです。インタラクティブな
+            遊びの時間を愛する一方で、家の中の日当たりの良い場所でくつろぐことも同じように
+            満足しています。彼女の優しい性格は理想的な仲間であり、いつも柔らかなゴロゴロ音と
+            頭突きで愛情を示してくれます。
+          </p>
+          <ul>
+            <li>とても愛情深く、抱っこが大好き</li>
+            <li>すべてに好奇心旺盛、特に新しい箱には目がない</li>
+            <li>忍耐強く優しく、爪を出すことは決してない</li>
+            <li>夕食の時間には鳴いてアピール（とても説得力がある！）</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>好きなもの</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <h3>食べ物</h3>
+              <ul>
+                <li>マグロ（特別な日だけ！）</li>
+                <li>鶏肉のおやつ</li>
+                <li>普段のキブル（意外にも熱心に食べる）</li>
+              </ul>
+            </div>
+            <div>
+              <h3>活動</h3>
+              <ul>
+                <li>羽根付きの棒を追いかけること</li>
+                <li>窓から鳥を観察すること</li>
+                <li>日向での午後のお昼寝</li>
+                <li>カサカサするボールで遊ぶこと</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        
+        <section>
+          <h2>癖と習慣</h2>
+          <p>
+            すべての猫にはユニークな行動があり、コマコも例外ではありません：
+          </p>
+          <ul>
+            <li>好奇心を抱くとミーアキャットのように座る</li>
+            <li>「このドアを開けてください」という特別な鳴き声を持っている</li>
+            <li>キーボードの上に座ってコンピューター作業を「手伝う」のが好き</li>
+            <li>小さなおもちゃを集めてソファの下に隠す</li>
+            <li>小さなホストのように玄関で皆を出迎える</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>健康とケア</h2>
+          <p>
+            スコティッシュフォールドとして、コマコは継続的な健康と幸福を確保するために
+            定期的な獣医検診を受けています。バランスの取れた栄養と毎日の遊びセッションを通じて
+            健康的な体重を維持しています。定期的なブラッシングで被毛を絹のように滑らかに
+            保っており、これを彼女は絶対に愛しています。
+          </p>
+        </section>
+        
+        <section>
+          <h2>楽しい事実</h2>
+          <ul>
+            <li>日本の物語の愛される登場人物にちなんで名付けられた</li>
+            <li>ドアを開けることができる（レバーハンドルは彼女の敵ではない）</li>
+            <li>愛さない段ボール箱に出会ったことがない</li>
+            <li>3部屋先からおやつの袋の音を認識できる</li>
+            <li>自分のInstagramフォロワーを持っている（もちろん！）</li>
+          </ul>
+        </section>
+        
+        <section class="mt-12 rounded-lg bg-primary-50 p-6 dark:bg-primary-900/20">
+          <h2 class="mt-0">つながり</h2>
+          <p>
+            コマコをもっと見たいですか？このギャラリーを通じて彼女の冒険を追跡してください。
+            ここでは彼女の日常の瞬間、マイルストーン、そしてその間のすべての可愛さを
+            共有しています。新しい写真と物語が定期的に追加されています！
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+  
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

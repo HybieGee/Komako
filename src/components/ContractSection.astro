@@ -1,5 +1,6 @@
 ---
 import { tokenConfig } from '@config/token';
+import { getLangFromUrl, useTranslations } from '@lib/i18n';
 
 // Only show this section if configured to do so
 if (!tokenConfig.launch.showCA) {
@@ -8,6 +9,9 @@ if (!tokenConfig.launch.showCA) {
 
 const { contractAddress, token } = tokenConfig;
 const isLaunched = contractAddress.isLaunched && contractAddress.address;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 {tokenConfig.launch.showCA && (
@@ -20,23 +24,23 @@ const isLaunched = contractAddress.isLaunched && contractAddress.address;
       </div>
       
       <h3 class="text-2xl font-serif font-bold text-komako-eyes mb-4">
-        {token.symbol} Token
+        {t('token.title')}
       </h3>
       
       <p class="text-komako-soft mb-6 max-w-md mx-auto">
-        Join the Komako community with our {token.network} token. Authentic, community-driven, and celebrating our beloved Scottish Fold.
+        {t('token.description')}
       </p>
       
       {isLaunched ? (
         <div class="space-y-4">
           <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-komako-cozy">
-            <p class="text-sm text-komako-soft mb-2 font-medium">Contract Address</p>
+            <p class="text-sm text-komako-soft mb-2 font-medium">{t('token.ca')}</p>
             <div class="flex items-center justify-between bg-komako-light rounded-lg p-3">
               <code class="text-sm text-komako-eyes font-mono break-all">{contractAddress.address}</code>
               <button 
                 onclick={`navigator.clipboard.writeText('${contractAddress.address}')`}
                 class="ml-3 p-2 rounded-lg bg-accent-rose hover:bg-accent-pink text-white transition-colors"
-                title="Copy to clipboard"
+                title={t('token.copy')}
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -63,7 +67,7 @@ const isLaunched = contractAddress.isLaunched && contractAddress.address;
                 rel="noopener noreferrer"
                 class="btn-primary text-sm"
               >
-                Buy on Jupiter
+                {t('token.buy')}
               </a>
             )}
             {tokenConfig.trading.birdeye && (
@@ -84,10 +88,10 @@ const isLaunched = contractAddress.isLaunched && contractAddress.address;
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span class="font-medium">Token Coming Soon</span>
+            <span class="font-medium">{t('token.coming')}</span>
           </div>
           <p class="text-sm text-komako-cozy">
-            The {token.symbol} token will be launching soon on {token.network}. Stay tuned for the official announcement!
+            {t('token.coming.desc')}
           </p>
         </div>
       )}
