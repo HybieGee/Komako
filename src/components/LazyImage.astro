@@ -1,0 +1,85 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+  width?: string | number;
+  height?: string | number;
+  style?: string;
+}
+
+const { 
+  src, 
+  alt, 
+  loading = 'lazy', 
+  class: className = '', 
+  width = '400', 
+  height = '300',
+  style = ''
+} = Astro.props;
+---
+
+<img
+  src={src}
+  alt={alt}
+  loading={loading}
+  decoding="async"
+  class={`lazy-image ${className}`}
+  width={width}
+  height={height}
+  style={`image-rendering: -webkit-optimize-contrast; will-change: transform; ${style}`}
+  data-src={src}
+/>
+
+<script>
+  // Intersection Observer for lazy loading
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '50px',
+      threshold: 0.1
+    });
+
+    // Observe all lazy images
+    document.querySelectorAll('.lazy-image[loading="lazy"]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+</script>
+
+<style>
+  .lazy-image {
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  .lazy-image.loaded,
+  .lazy-image[loading="eager"] {
+    opacity: 1;
+  }
+  
+  .lazy-image:not(.loaded):not([loading="eager"]) {
+    background: linear-gradient(45deg, #f7f3e9 25%, #f0ead6 25%, #f0ead6 50%, #f7f3e9 50%, #f7f3e9 75%, #f0ead6 75%);
+    background-size: 20px 20px;
+    animation: loading-shimmer 1.5s infinite;
+  }
+  
+  @keyframes loading-shimmer {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+</style>

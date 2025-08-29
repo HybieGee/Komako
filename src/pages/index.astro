@@ -6,16 +6,25 @@ import { getPhotos } from '@lib/content';
 
 const photos = await getPhotos();
 const featuredPhotos = photos.slice(0, 20);
+const preloadImages = featuredPhotos.slice(0, 6).map(photo => photo.image);
 ---
 
 <BaseLayout
   title="Komako Gallery - Scottish Fold Cat Photography"
   description="A beautiful gallery celebrating Komako, a Scottish Fold cat born March 26, 2021. Browse photos capturing her daily life and adorable moments."
 >
+  <!-- Preload critical images -->
+  {preloadImages.map(src => (
+    <link rel="preload" as="image" href={src} slot="head" />
+  ))}
   <div class="container py-16">
     <!-- Hero Section -->
-    <div class="text-center mb-20 relative">
-      <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-20 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-30 pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-accent-pink/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-40 h-40 bg-accent-rose/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+      </div>
+      <div class="max-w-4xl mx-auto relative">
         <h1 class="text-5xl md:text-6xl font-serif font-bold text-komako-eyes mb-6 leading-tight">
           Welcome to
           <span class="bg-gradient-to-r from-accent-rose to-accent-pink bg-clip-text text-transparent">

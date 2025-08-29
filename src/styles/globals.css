@@ -16,7 +16,10 @@
 
   body {
     @apply bg-komako-cream text-komako-eyes font-sans;
-    background: var(--gradient-komako);
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(248, 187, 217, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(196, 181, 131, 0.1) 0%, transparent 50%),
+      var(--gradient-komako);
     min-height: 100vh;
   }
 
@@ -47,7 +50,7 @@
   }
 
   .card {
-    @apply rounded-xl bg-white/80 backdrop-blur-sm p-6 transition-shadow duration-200 hover:shadow-lg border border-komako-light/50;
+    @apply rounded-xl bg-white/80 backdrop-blur-sm p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-komako-light/50;
     box-shadow: var(--shadow-komako);
   }
 
