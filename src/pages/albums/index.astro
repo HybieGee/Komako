@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import AlbumCard from '@components/AlbumCard.astro';
+import { getAlbums, getPhotos } from '@lib/content';
+
+const albums = await getAlbums();
+const photos = await getPhotos();
+
+const albumsWithCount = albums.map(album => ({
+  ...album,
+  photoCount: photos.filter(photo => photo.album === album.slug).length,
+}));
+---
+
+<BaseLayout
+  title="Photo Albums - Komako Gallery"
+  description="Browse curated photo albums of Komako, organized by themes and time periods."
+>
+  <div class="container py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">Photo Albums</h1>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">
+        Curated collections of Komako's best moments
+      </p>
+    </header>
+    
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {albumsWithCount.map((album) => (
+        <AlbumCard {...album} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

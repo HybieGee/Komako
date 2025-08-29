@@ -1,0 +1,24 @@
+---
+export interface Props {
+  tags: string[];
+  activeTag?: string;
+  baseUrl?: string;
+}
+
+const { tags, activeTag, baseUrl = '/search' } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-2">
+  {tags.map((tag) => (
+    <a
+      href={`${baseUrl}?tag=${encodeURIComponent(tag)}`}
+      class={`badge transition-colors ${
+        tag === activeTag
+          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-200'
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+      }`}
+    >
+      #{tag}
+    </a>
+  ))}
+</div>

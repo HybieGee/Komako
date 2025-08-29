@@ -1,0 +1,291 @@
+---
+---
+
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lightbox-overlay"></div>
+  <div class="lightbox-content">
+    <button
+      id="lightbox-close"
+      class="lightbox-close"
+      aria-label="Close lightbox"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    
+    <button
+      id="lightbox-prev"
+      class="lightbox-nav lightbox-nav-prev"
+      aria-label="Previous image"
+    >
+      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+    
+    <button
+      id="lightbox-next"
+      class="lightbox-nav lightbox-nav-next"
+      aria-label="Next image"
+    >
+      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+    
+    <div class="lightbox-image-container">
+      <img id="lightbox-image" src="" alt="" class="lightbox-image" />
+      <div class="lightbox-loading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-caption">
+      <h3 id="lightbox-title" class="text-lg font-semibold"></h3>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .lightbox.hidden {
+    display: none;
+  }
+
+  .lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(8px);
+  }
+
+  .lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    z-index: 10;
+    padding: 0.5rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+  }
+
+  .lightbox-close:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    padding: 0.5rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+  }
+
+  .lightbox-nav:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .lightbox-nav-prev {
+    left: -3rem;
+  }
+
+  .lightbox-nav-next {
+    right: -3rem;
+  }
+
+  @media (max-width: 768px) {
+    .lightbox-nav-prev {
+      left: 0.5rem;
+    }
+
+    .lightbox-nav-next {
+      right: 0.5rem;
+    }
+  }
+
+  .lightbox-image-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    max-height: calc(90vh - 4rem);
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: calc(90vh - 4rem);
+    object-fit: contain;
+    border-radius: 0.5rem;
+  }
+
+  .lightbox-loading {
+    position: absolute;
+    display: none;
+  }
+
+  .lightbox-loading.active {
+    display: block;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .lightbox-caption {
+    position: absolute;
+    bottom: -2.5rem;
+    left: 0;
+    right: 0;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 0.5rem;
+  }
+</style>
+
+<script>
+  let currentIndex = 0;
+  let images: NodeListOf<HTMLElement> = document.querySelectorAll('.lightbox-trigger');
+  
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
+  
+  function openLightbox(index: number) {
+    const trigger = images[index];
+    if (!trigger || !lightbox || !lightboxImage || !lightboxTitle) return;
+    
+    currentIndex = index;
+    const imageUrl = trigger.dataset.image;
+    const title = trigger.dataset.title;
+    const alt = trigger.dataset.alt;
+    
+    if (imageUrl) {
+      lightboxImage.src = imageUrl;
+      lightboxImage.alt = alt || '';
+      if (lightboxTitle) lightboxTitle.textContent = title || '';
+      lightbox.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      lightbox.focus();
+    }
+  }
+  
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }
+  
+  function navigateLightbox(direction: number) {
+    images = document.querySelectorAll('.lightbox-trigger');
+    currentIndex = (currentIndex + direction + images.length) % images.length;
+    openLightbox(currentIndex);
+  }
+  
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    
+    if (target.closest('.lightbox-trigger')) {
+      e.preventDefault();
+      e.stopPropagation();
+      images = document.querySelectorAll('.lightbox-trigger');
+      const trigger = target.closest('.lightbox-trigger') as HTMLElement;
+      const index = Array.from(images).indexOf(trigger);
+      openLightbox(index);
+    }
+  });
+  
+  lightboxClose?.addEventListener('click', closeLightbox);
+  lightboxPrev?.addEventListener('click', () => navigateLightbox(-1));
+  lightboxNext?.addEventListener('click', () => navigateLightbox(1));
+  
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox || (e.target as HTMLElement).classList.contains('lightbox-overlay')) {
+      closeLightbox();
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox || lightbox.classList.contains('hidden')) return;
+    
+    switch (e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowLeft':
+        navigateLightbox(-1);
+        break;
+      case 'ArrowRight':
+        navigateLightbox(1);
+        break;
+    }
+  });
+  
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  lightbox?.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  lightbox?.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+  
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        navigateLightbox(1);
+      } else {
+        navigateLightbox(-1);
+      }
+    }
+  }
+</script>

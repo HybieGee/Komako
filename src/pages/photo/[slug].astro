@@ -1,0 +1,107 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import TagPills from '@components/TagPills.astro';
+import { getPhotos } from '@lib/content';
+
+export async function getStaticPaths() {
+  const photos = await getPhotos();
+  
+  return photos.map((photo) => ({
+    params: { slug: photo.slug },
+    props: { photo },
+  }));
+}
+
+const { photo } = Astro.props;
+
+const formattedDate = new Date(photo.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageObject',
+  name: photo.title,
+  description: photo.alt,
+  contentUrl: photo.image,
+  datePublished: photo.date,
+  author: {
+    '@type': 'Person',
+    name: "Komako's Human",
+  },
+};
+---
+
+<BaseLayout
+  title={`${photo.title} - Komako Gallery`}
+  description={photo.alt}
+  image={photo.image}
+>
+  <div class="container py-8">
+    <div class="mx-auto max-w-4xl">
+      <nav class="mb-4 text-sm">
+        <a href="/" class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+          ← Back to gallery
+        </a>
+      </nav>
+      
+      <div class="overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+        <img
+          src={photo.image}
+          alt={photo.alt}
+          class="h-auto w-full"
+        />
+      </div>
+      
+      <div class="mt-6">
+        <h1 class="text-2xl font-bold">{photo.title}</h1>
+        
+        <div class="mt-2 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <time>{formattedDate}</time>
+          {photo.location && (
+            <>
+              <span>&middot;</span>
+              <span>{photo.location}</span>
+            </>
+          )}
+        </div>
+        
+        {photo.tags && photo.tags.length > 0 && (
+          <div class="mt-4">
+            <TagPills tags={photo.tags} />
+          </div>
+        )}
+        
+        {photo.content && (
+          <div class="prose prose-lg mt-6 dark:prose-dark">
+            <Fragment set:html={photo.content} />
+          </div>
+        )}
+        
+        <div class="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
+          <h2 class="mb-4 text-lg font-semibold">Share this photo</h2>
+          <div class="flex gap-3">
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(photo.title)}&url=${encodeURIComponent(Astro.url.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-secondary"
+            >
+              Share on Twitter
+            </a>
+            <button
+              onclick="navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied!'))"
+              class="btn-secondary"
+            >
+              Copy link
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

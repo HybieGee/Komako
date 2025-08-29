@@ -1,0 +1,134 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const birthDate = new Date('2021-03-26');
+const today = new Date();
+const ageInMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + 
+                    (today.getMonth() - birthDate.getMonth());
+const years = Math.floor(ageInMonths / 12);
+const months = ageInMonths % 12;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Animal',
+    name: 'Komako',
+    birthDate: '2021-03-26',
+    breed: 'Scottish Fold',
+    description: 'A sweet Scottish Fold cat living in Brisbane, Australia',
+    image: '/og-default.jpg',
+  },
+};
+---
+
+<BaseLayout
+  title="About Komako - Scottish Fold Cat"
+  description="Meet Komako, a Scottish Fold cat born March 26, 2021. Learn about her personality, favorite things, and daily life."
+>
+  <div class="container py-8">
+    <div class="mx-auto max-w-4xl">
+      <header class="mb-8 text-center">
+        <h1 class="text-4xl font-bold">About Komako</h1>
+        <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">
+          {years} years and {months} months of pure joy
+        </p>
+      </header>
+      
+      <div class="prose prose-lg mx-auto dark:prose-dark">
+        <section>
+          <h2>Meet Komako</h2>
+          <p>
+            Born on March 26, 2021, Komako is a Scottish Fold cat who has been bringing joy and 
+            companionship to our home in Brisbane, Australia. With her distinctive folded ears 
+            and round, expressive eyes, she captures hearts wherever she goes.
+          </p>
+        </section>
+        
+        <section>
+          <h2>Personality</h2>
+          <p>
+            Komako is the perfect blend of playful and peaceful. She loves interactive play sessions 
+            but is equally content lounging in sunny spots throughout the house. Her gentle nature 
+            makes her an ideal companion, always ready with a soft purr and a head bump.
+          </p>
+          <ul>
+            <li>Incredibly affectionate and loves cuddles</li>
+            <li>Curious about everything, especially new boxes</li>
+            <li>Patient and gentle, never uses her claws</li>
+            <li>Vocal when it's dinner time (very persuasive!)</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Favorite Things</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <h3>Foods</h3>
+              <ul>
+                <li>Tuna (special occasions only!)</li>
+                <li>Chicken treats</li>
+                <li>Her regular kibble (surprisingly enthusiastic)</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Activities</h3>
+              <ul>
+                <li>Chasing feather wands</li>
+                <li>Bird watching from the window</li>
+                <li>Afternoon naps in sunbeams</li>
+                <li>Playing with crinkly balls</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        
+        <section>
+          <h2>Quirks & Habits</h2>
+          <p>
+            Every cat has their unique behaviors, and Komako is no exception:
+          </p>
+          <ul>
+            <li>Sits up like a meerkat when curious</li>
+            <li>Has a specific meow for "open this door, please"</li>
+            <li>Loves to "help" with computer work by sitting on keyboards</li>
+            <li>Collects small toys and hides them under the couch</li>
+            <li>Greets everyone at the door like a tiny host</li>
+          </ul>
+        </section>
+        
+        <section>
+          <h2>Health & Care</h2>
+          <p>
+            As a Scottish Fold, Komako receives regular veterinary check-ups to ensure her continued 
+            health and happiness. She maintains a healthy weight through balanced nutrition and daily 
+            play sessions. Her coat is kept silky smooth with regular brushing, which she absolutely 
+            loves.
+          </p>
+        </section>
+        
+        <section>
+          <h2>Fun Facts</h2>
+          <ul>
+            <li>Named after a beloved character from a Japanese story</li>
+            <li>Can open doors (lever handles are no match for her)</li>
+            <li>Has never met a cardboard box she didn't love</li>
+            <li>Recognizes the sound of treat bags from three rooms away</li>
+            <li>Has her own Instagram following (of course!)</li>
+          </ul>
+        </section>
+        
+        <section class="mt-12 rounded-lg bg-primary-50 p-6 dark:bg-primary-900/20">
+          <h2 class="mt-0">Connect</h2>
+          <p>
+            Want to see more of Komako? Follow her adventures through this gallery, where I share 
+            her daily moments, milestones, and all the cuteness in between. New photos and stories 
+            are added regularly!
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+  
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

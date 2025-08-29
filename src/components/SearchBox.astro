@@ -1,0 +1,97 @@
+---
+---
+
+<div class="search-box">
+  <input
+    type="search"
+    id="search-input"
+    placeholder="Search photos, albums, journal..."
+    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400"
+  />
+  <div id="search-results" class="mt-4 hidden space-y-4"></div>
+</div>
+
+<script>
+  import Fuse from 'fuse.js';
+  
+  let fuse: Fuse<any>;
+  let searchIndex: any[] = [];
+  
+  async function initSearch() {
+    try {
+      const response = await fetch('/search-index.json');
+      searchIndex = await response.json();
+      
+      fuse = new Fuse(searchIndex, {
+        keys: ['title', 'content', 'tags', 'excerpt'],
+        threshold: 0.3,
+        includeScore: true,
+      });
+    } catch (error) {
+      console.error('Failed to load search index:', error);
+    }
+  }
+  
+  function performSearch(query: string) {
+    if (!fuse || query.length < 2) {
+      hideResults();
+      return;
+    }
+    
+    const results = fuse.search(query).slice(0, 10);
+    displayResults(results);
+  }
+  
+  function displayResults(results: any[]) {
+    const resultsContainer = document.getElementById('search-results');
+    if (!resultsContainer) return;
+    
+    if (results.length === 0) {
+      resultsContainer.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No results found</p>';
+      resultsContainer.classList.remove('hidden');
+      return;
+    }
+    
+    const html = results.map(({ item }) => `
+      <a href="${item.url}" class="block card">
+        <h3 class="font-semibold">${item.title}</h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">${item.excerpt || ''}</p>
+        ${item.tags ? `
+          <div class="mt-2 flex flex-wrap gap-1">
+            ${item.tags.map((tag: string) => `
+              <span class="badge bg-gray-100 text-xs dark:bg-gray-700">${tag}</span>
+            `).join('')}
+          </div>
+        ` : ''}
+      </a>
+    `).join('');
+    
+    resultsContainer.innerHTML = html;
+    resultsContainer.classList.remove('hidden');
+  }
+  
+  function hideResults() {
+    const resultsContainer = document.getElementById('search-results');
+    if (resultsContainer) {
+      resultsContainer.classList.add('hidden');
+    }
+  }
+  
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  let debounceTimer: NodeJS.Timeout;
+  
+  searchInput?.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    const query = (e.target as HTMLInputElement).value;
+    
+    debounceTimer = setTimeout(() => {
+      performSearch(query);
+    }, 300);
+  });
+  
+  searchInput?.addEventListener('blur', () => {
+    setTimeout(hideResults, 200);
+  });
+  
+  initSearch();
+</script>

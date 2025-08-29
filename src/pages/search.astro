@@ -1,0 +1,70 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SearchBox from '@components/SearchBox.astro';
+import GalleryGrid from '@components/GalleryGrid.astro';
+import Lightbox from '@components/Lightbox.astro';
+import TagPills from '@components/TagPills.astro';
+import { getPhotos, getAllTags } from '@lib/content';
+
+const photos = await getPhotos();
+const allTags = await getAllTags();
+
+const url = new URL(Astro.request.url);
+const tagParam = url.searchParams.get('tag');
+
+let filteredPhotos = photos;
+let activeTag: string | undefined;
+
+if (tagParam) {
+  activeTag = tagParam;
+  filteredPhotos = photos.filter(photo => 
+    photo.tags?.includes(tagParam)
+  );
+}
+---
+
+<BaseLayout
+  title="Search - Komako Gallery"
+  description="Search through Komako's photos, albums, and journal entries."
+>
+  <div class="container py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">Search</h1>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">
+        Find specific photos, albums, or journal entries
+      </p>
+    </header>
+    
+    <div class="mb-8">
+      <SearchBox />
+    </div>
+    
+    <section class="mb-8">
+      <h2 class="mb-4 text-xl font-semibold">Popular Tags</h2>
+      <TagPills tags={allTags} activeTag={activeTag} />
+    </section>
+    
+    {tagParam && (
+      <section>
+        <div class="mb-6 flex items-center justify-between">
+          <h2 class="text-xl font-semibold">
+            Photos tagged "{tagParam}"
+          </h2>
+          <a href="/search" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+            Clear filter
+          </a>
+        </div>
+        
+        {filteredPhotos.length > 0 ? (
+          <GalleryGrid photos={filteredPhotos} />
+        ) : (
+          <p class="text-gray-500 dark:text-gray-400">
+            No photos found with this tag.
+          </p>
+        )}
+      </section>
+    )}
+  </div>
+  
+  <Lightbox />
+</BaseLayout>

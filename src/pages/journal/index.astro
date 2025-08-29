@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostCard from '@components/PostCard.astro';
+import { getJournalPosts } from '@lib/content';
+
+const posts = await getJournalPosts();
+---
+
+<BaseLayout
+  title="Journal - Komako Gallery"
+  description="Stories, updates, and behind-the-scenes notes about life with Komako."
+>
+  <div class="container py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">Journal</h1>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">
+        Stories and notes from life with Komako
+      </p>
+    </header>
+    
+    <div class="space-y-6">
+      {posts.map((post) => (
+        <PostCard {...post} />
+      ))}
+    </div>
+    
+    {posts.length === 0 && (
+      <p class="text-gray-500 dark:text-gray-400">
+        No journal entries yet. Check back soon!
+      </p>
+    )}
+  </div>
+</BaseLayout>

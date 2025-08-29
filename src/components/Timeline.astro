@@ -1,0 +1,144 @@
+---
+export interface TimelineItem {
+  date: string;
+  title: string;
+  description?: string;
+  image?: string;
+  link?: string;
+  type: 'photo' | 'album' | 'journal' | 'milestone';
+}
+
+export interface Props {
+  items: TimelineItem[];
+}
+
+const { items } = Astro.props;
+
+const groupedItems = items.reduce((acc, item) => {
+  const date = new Date(item.date);
+  const yearMonth = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  
+  if (!acc[yearMonth]) {
+    acc[yearMonth] = {
+      year: date.getFullYear(),
+      month: date.toLocaleDateString('en-US', { month: 'long' }),
+      items: [],
+    };
+  }
+  
+  acc[yearMonth].items.push(item);
+  return acc;
+}, {} as Record<string, { year: number; month: string; items: TimelineItem[] }>);
+
+const sortedGroups = Object.entries(groupedItems).sort((a, b) => b[0].localeCompare(a[0]));
+---
+
+<div class="timeline">
+  {sortedGroups.map(([key, group]) => (
+    <div class="timeline-group">
+      <div class="timeline-header">
+        <h3 class="text-lg font-semibold">{group.month}</h3>
+        <span class="text-sm text-gray-500 dark:text-gray-400">{group.year}</span>
+      </div>
+      
+      <div class="timeline-items">
+        {group.items.map((item) => (
+          <article class="timeline-item">
+            <div class="timeline-marker">
+              <div class={`timeline-dot timeline-dot-${item.type}`}></div>
+            </div>
+            
+            <div class="timeline-content">
+              <time class="text-xs text-gray-500 dark:text-gray-400">
+                {new Date(item.date).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  weekday: 'short',
+                })}
+              </time>
+              
+              {item.link ? (
+                <a href={item.link} class="block group">
+                  <h4 class="font-medium group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                    {item.title}
+                  </h4>
+                </a>
+              ) : (
+                <h4 class="font-medium">{item.title}</h4>
+              )}
+              
+              {item.description && (
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  {item.description}
+                </p>
+              )}
+              
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  class="mt-2 h-32 w-32 rounded-lg object-cover"
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .timeline {
+    @apply space-y-8;
+  }
+
+  .timeline-group {
+    @apply relative;
+  }
+
+  .timeline-header {
+    @apply mb-4 flex items-baseline gap-2 pl-12;
+  }
+
+  .timeline-items {
+    @apply relative space-y-4;
+  }
+
+  .timeline-items::before {
+    content: '';
+    @apply absolute left-4 top-2 bottom-2 w-0.5 bg-gray-200 dark:bg-gray-700;
+  }
+
+  .timeline-item {
+    @apply relative flex gap-6;
+  }
+
+  .timeline-marker {
+    @apply relative z-10 flex h-8 w-8 shrink-0 items-center justify-center;
+  }
+
+  .timeline-dot {
+    @apply h-3 w-3 rounded-full border-2 border-white dark:border-gray-900;
+  }
+
+  .timeline-dot-photo {
+    @apply bg-blue-500;
+  }
+
+  .timeline-dot-album {
+    @apply bg-green-500;
+  }
+
+  .timeline-dot-journal {
+    @apply bg-purple-500;
+  }
+
+  .timeline-dot-milestone {
+    @apply bg-yellow-500;
+  }
+
+  .timeline-content {
+    @apply flex-1 pb-4;
+  }
+</style>

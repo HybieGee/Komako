@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getJournalPosts } from '@lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getJournalPosts();
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  datePublished: post.date,
+  description: post.excerpt,
+  author: {
+    '@type': 'Person',
+    name: "Komako's Human",
+  },
+};
+---
+
+<BaseLayout
+  title={`${post.title} - Komako Journal`}
+  description={post.excerpt}
+>
+  <div class="container py-8">
+    <article class="mx-auto max-w-3xl">
+      <nav class="mb-4 text-sm">
+        <a href="/journal" class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+          ← Back to journal
+        </a>
+      </nav>
+      
+      <header>
+        <h1 class="text-3xl font-bold">{post.title}</h1>
+        <div class="mt-4 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+          <time>{formattedDate}</time>
+          {post.readTime && (
+            <>
+              <span>&middot;</span>
+              <span>{post.readTime}</span>
+            </>
+          )}
+        </div>
+      </header>
+      
+      <div class="prose prose-lg mt-8 dark:prose-dark">
+        <Fragment set:html={post.content} />
+      </div>
+      
+      <footer class="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
+        <h2 class="mb-4 text-lg font-semibold">Share this post</h2>
+        <div class="flex gap-3">
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(Astro.url.href)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-secondary"
+          >
+            Share on Twitter
+          </a>
+          <button
+            onclick="navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied!'))"
+            class="btn-secondary"
+          >
+            Copy link
+          </button>
+        </div>
+      </footer>
+    </article>
+  </div>
+  
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

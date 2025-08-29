@@ -1,0 +1,53 @@
+---
+import PhotoCard from './PhotoCard.astro';
+
+export interface Photo {
+  title: string;
+  image: string;
+  alt: string;
+  date: string;
+  tags?: string[];
+  slug: string;
+}
+
+export interface Props {
+  photos: Photo[];
+  loading?: 'lazy' | 'eager';
+}
+
+const { photos, loading = 'lazy' } = Astro.props;
+---
+
+<div class="masonry-grid">
+  {photos.map((photo, index) => (
+    <PhotoCard
+      {...photo}
+      loading={index < 6 ? 'eager' : loading}
+    />
+  ))}
+</div>
+
+<style>
+  .masonry-grid {
+    column-count: 1;
+    column-gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .masonry-grid {
+      column-count: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-grid {
+      column-count: 3;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .masonry-grid {
+      column-count: 4;
+    }
+  }
+</style>

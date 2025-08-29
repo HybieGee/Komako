@@ -1,0 +1,93 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Timeline from '@components/Timeline.astro';
+import type { TimelineItem } from '@components/Timeline.astro';
+import { getPhotos, getAlbums, getJournalPosts } from '@lib/content';
+
+const photos = await getPhotos();
+const albums = await getAlbums();
+const posts = await getJournalPosts();
+
+const timelineItems: TimelineItem[] = [
+  ...photos.map(photo => ({
+    date: photo.date,
+    title: photo.title,
+    description: photo.tags?.join(', '),
+    image: photo.image,
+    link: `/photo/${photo.slug}`,
+    type: 'photo' as const,
+  })),
+  ...albums.map(album => ({
+    date: album.date || '2025-01-01',
+    title: album.title,
+    description: album.summary,
+    image: album.cover,
+    link: `/albums/${album.slug}`,
+    type: 'album' as const,
+  })),
+  ...posts.map(post => ({
+    date: post.date,
+    title: post.title,
+    description: post.excerpt,
+    link: `/journal/${post.slug}`,
+    type: 'journal' as const,
+  })),
+  {
+    date: '2021-03-26',
+    title: 'Komako was born!',
+    description: 'Our Scottish Fold journey begins',
+    type: 'milestone' as const,
+  },
+].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<BaseLayout
+  title="Timeline - Komako Gallery"
+  description="A chronological journey through Komako's life, from kitten to today."
+>
+  <div class="container py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold">Timeline</h1>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">
+        A chronological journey through Komako's adventures
+      </p>
+    </header>
+    
+    <Timeline items={timelineItems} />
+    
+    <div id="load-more-container" class="mt-8 text-center">
+      <button id="load-more" class="btn-secondary">
+        Load more
+      </button>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  let visibleItems = 20;
+  const itemsPerLoad = 20;
+  const allTimelineItems = document.querySelectorAll('.timeline-item');
+  const loadMoreBtn = document.getElementById('load-more');
+  const loadMoreContainer = document.getElementById('load-more-container');
+  
+  function showItems() {
+    allTimelineItems.forEach((item, index) => {
+      if (index < visibleItems) {
+        (item as HTMLElement).style.display = 'flex';
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
+    });
+    
+    if (visibleItems >= allTimelineItems.length && loadMoreContainer) {
+      loadMoreContainer.style.display = 'none';
+    }
+  }
+  
+  loadMoreBtn?.addEventListener('click', () => {
+    visibleItems += itemsPerLoad;
+    showItems();
+  });
+  
+  showItems();
+</script>
