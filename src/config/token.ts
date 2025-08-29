@@ -5,8 +5,8 @@ export const tokenConfig = {
   // Contract Address - Update this when token launches
   contractAddress: {
     // Set this to the actual CA when token goes live
-    address: '', // Example: 'AbCd1234EfGh5678IjKl9012MnOp3456QrSt7890UvWx'
-    isLaunched: false, // Set to true when token is launched
+    address: '4ijaKXxNvEurES66hFsRqLysz9YK2grAMA1AjtzVpump', // Example: 'AbCd1234EfGh5678IjKl9012MnOp3456QrSt7890UvWx'
+    isLaunched: true, // Set to true when token is launched
   },
   
   // Token Details
@@ -35,6 +35,6 @@ export const tokenConfig = {
   launch: {
     showCountdown: false, // Set to true if you want a countdown timer
     launchDate: '', // ISO date string when token launches
-    showCA: false,  // Set to true when ready to show CA section
+    showCA: true,  // Set to true when ready to show CA section
   },
 };
