@@ -1,6 +1,5 @@
 ---
 import '@styles/globals.css';
-import ThemeToggle from '@components/ThemeToggle.astro';
 import LangSwitcher from '@components/LangSwitcher.astro';
 
 export interface Props {
@@ -57,66 +56,26 @@ const socialImageURL = new URL(image, Astro.site);
       rel="stylesheet"
     />
     
-    <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      })();
-      
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    </script>
   </head>
   <body class={className}>
-    <header class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b-2 border-komako-light shadow-sm">
-      <nav class="container flex h-20 items-center justify-between">
+    <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-komako-light/50 shadow-sm">
+      <nav class="container flex h-16 items-center justify-between">
         <a href="/" class="flex items-center space-x-3 group">
-          <div class="relative">
-            <div class="w-12 h-12 bg-gradient-to-br from-accent-pink to-accent-rose rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-              <span class="text-2xl">🐱</span>
-            </div>
-            <div class="absolute -top-1 -right-1 w-4 h-4 bg-accent-rose rounded-full animate-pulse"></div>
-          </div>
+          <div class="w-10 h-10 bg-gradient-to-br from-accent-pink to-accent-rose rounded-full shadow-md group-hover:shadow-lg transition-all duration-300"></div>
           <div class="flex flex-col">
-            <span class="text-2xl font-kawaii font-bold text-komako-eyes tracking-wide">Komako</span>
-            <span class="text-xs text-komako-soft font-medium -mt-1">Scottish Fold Princess</span>
+            <span class="text-xl font-serif font-bold text-komako-eyes tracking-wide">Komako</span>
+            <span class="text-xs text-komako-soft font-medium -mt-1">Scottish Fold Gallery</span>
           </div>
         </a>
         
-        <div class="flex items-center space-x-8">
-          <a href="/" class="nav-link">
-            <span class="text-lg">🏠</span>
-            <span class="hidden sm:inline">Gallery</span>
-          </a>
-          <a href="/timeline" class="nav-link">
-            <span class="text-lg">⏰</span>
-            <span class="hidden sm:inline">Timeline</span>
-          </a>
-          <a href="/albums" class="nav-link">
-            <span class="text-lg">📸</span>
-            <span class="hidden sm:inline">Albums</span>
-          </a>
-          <a href="/journal" class="nav-link">
-            <span class="text-lg">📖</span>
-            <span class="hidden sm:inline">Journal</span>
-          </a>
-          <a href="/about" class="nav-link">
-            <span class="text-lg">💕</span>
-            <span class="hidden sm:inline">About</span>
-          </a>
-          <a href="/search" class="nav-link">
-            <span class="text-lg">🔍</span>
-          </a>
+        <div class="flex items-center space-x-6">
+          <a href="/" class="nav-link">Gallery</a>
+          <a href="/timeline" class="nav-link">Timeline</a>
+          <a href="/albums" class="nav-link">Albums</a>
+          <a href="/journal" class="nav-link">Journal</a>
+          <a href="/about" class="nav-link">About</a>
+          <a href="/search" class="nav-link">Search</a>
           <LangSwitcher lang={lang} />
-          <ThemeToggle />
         </div>
       </nav>
     </header>
@@ -125,40 +84,31 @@ const socialImageURL = new URL(image, Astro.site);
       <slot />
     </main>
     
-    <footer class="mt-20 bg-white/60 backdrop-blur-sm border-t-2 border-komako-light">
-      <div class="container py-12">
-        <div class="text-center space-y-6">
-          <div class="flex justify-center space-x-2 text-3xl">
-            <span class="kawaii-float" style="animation-delay: 0s;">🐾</span>
-            <span class="kawaii-float" style="animation-delay: 0.5s;">💕</span>
-            <span class="kawaii-float" style="animation-delay: 1s;">🌸</span>
-          </div>
-          
+    <footer class="mt-20 bg-white/60 backdrop-blur-sm border-t border-komako-light/50">
+      <div class="container py-8">
+        <div class="text-center space-y-4">
           <div class="max-w-md mx-auto">
-            <p class="text-komako-soft font-kawaii font-medium mb-2">
-              Made with endless love for our Scottish Fold princess
+            <p class="text-komako-soft font-medium mb-2">
+              A photographic celebration of Komako
             </p>
             <p class="text-sm text-komako-cozy">
-              © 2025 Komako's World • Spreading joy one photo at a time 
+              © 2025 Komako Gallery • Scottish Fold Adventures
             </p>
           </div>
           
           <div class="flex flex-wrap justify-center gap-6">
             <a href="https://x.com/OnlyKomako" class="footer-link">
-              <span class="mr-1">🐦</span>
               Twitter
             </a>
             <a href="/sitemap-index.xml" class="footer-link">
-              <span class="mr-1">🗺️</span>
               Sitemap
             </a>
             <a href="https://github.com/HybieGee/Komako" class="footer-link">
-              <span class="mr-1">💻</span>
               GitHub
             </a>
           </div>
           
-          <div class="w-32 h-1 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto rounded-full"></div>
+          <div class="w-16 h-0.5 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto"></div>
         </div>
       </div>
     </footer>

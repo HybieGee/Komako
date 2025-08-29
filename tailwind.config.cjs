@@ -1,13 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
-  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Nunito', 'Poppins', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['Crimson Text', 'Georgia', 'serif'],
-        kawaii: ['Comfortaa', 'Nunito', 'sans-serif'],
       },
       colors: {
         // Komako's cream/beige color palette

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Comfortaa:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,15 +6,8 @@
 
 @layer base {
   :root {
-    --color-bg: 247 243 233; /* komako-cream */
-    --color-text: 77 66 47; /* warm brown */
     --shadow-komako: 0 4px 20px rgba(196, 180, 131, 0.15);
     --gradient-komako: linear-gradient(135deg, #F7F3E9 0%, #F0EAD6 100%);
-  }
-
-  .dark {
-    --color-bg: 61 54 42; /* darker warm brown */
-    --color-text: 240 234 214; /* komako-light */
   }
 
   html {
@@ -22,14 +15,9 @@
   }
 
   body {
-    @apply bg-komako-cream text-komako-eyes font-sans transition-colors;
+    @apply bg-komako-cream text-komako-eyes font-sans;
     background: var(--gradient-komako);
     min-height: 100vh;
-  }
-
-  .dark body {
-    @apply bg-komako-eyes text-komako-light;
-    background: linear-gradient(135deg, #3D362A 0%, #4D4234 100%);
   }
 
   ::selection {
@@ -47,24 +35,20 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium font-kawaii transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-rose focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shadow-lg hover:shadow-xl;
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-rose focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
   }
 
   .btn-primary {
-    @apply btn bg-gradient-to-r from-accent-rose to-accent-pink text-white hover:from-accent-pink hover:to-accent-rose transform hover:scale-105;
+    @apply btn bg-gradient-to-r from-accent-rose to-accent-pink text-white hover:shadow-md;
   }
 
   .btn-secondary {
-    @apply btn bg-komako-light text-komako-eyes hover:bg-komako-warm border-2 border-komako-cozy hover:border-accent-rose;
+    @apply btn bg-white text-komako-eyes hover:bg-komako-light border border-komako-cozy hover:border-accent-rose;
   }
 
   .card {
-    @apply rounded-3xl bg-white/80 backdrop-blur-sm p-6 transition-all duration-300 hover:shadow-xl border border-komako-light/50;
+    @apply rounded-xl bg-white/80 backdrop-blur-sm p-6 transition-shadow duration-200 hover:shadow-lg border border-komako-light/50;
     box-shadow: var(--shadow-komako);
-  }
-
-  .dark .card {
-    @apply bg-komako-eyes/20 border-komako-soft/30;
   }
 
   .badge {
@@ -72,34 +56,15 @@
   }
 
   .nav-link {
-    @apply flex items-center space-x-2 px-3 py-2 text-sm font-kawaii font-medium text-komako-eyes hover:text-accent-rose transition-all duration-300 hover:bg-komako-light/50 rounded-full;
+    @apply px-3 py-2 text-sm font-medium text-komako-eyes hover:text-accent-rose transition-colors duration-200;
   }
 
   .footer-link {
-    @apply inline-flex items-center text-sm font-kawaii font-medium text-komako-soft hover:text-accent-rose transition-colors duration-300;
+    @apply text-sm font-medium text-komako-soft hover:text-accent-rose transition-colors duration-200;
   }
 
   .loading-skeleton {
-    @apply animate-pulse rounded bg-komako-light dark:bg-komako-soft;
-  }
-
-  /* Kawaii animations */
-  .kawaii-bounce {
-    animation: kawaii-bounce 2s ease-in-out infinite;
-  }
-
-  @keyframes kawaii-bounce {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .kawaii-float {
-    animation: kawaii-float 3s ease-in-out infinite;
-  }
-
-  @keyframes kawaii-float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-5px) rotate(2deg); }
+    @apply animate-pulse rounded bg-komako-light;
   }
 }
 
