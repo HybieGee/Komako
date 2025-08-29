@@ -16,7 +16,10 @@
       "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
       "Bash(for i in {1..22})",
       "Bash(do cp \"Pictures/Komako ($i).png\" \"public/images/2023/komako-$i.jpg\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(do cp \"Pictures/Komako ($i).png\" \"public/images/2023/komako-$i.jpg\")",
+      "Bash(node:*)",
+      "Bash(npm install)"
     ],
     "deny": [],
     "ask": []
