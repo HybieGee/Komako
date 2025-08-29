@@ -15,21 +15,26 @@ const getAlternatePath = () => {
 };
 
 const alternatePath = getAlternatePath();
-const alternateLabel = lang === 'en' ? '日本語' : 'English';
 ---
 
-<a
-  href={alternatePath}
-  class="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-  aria-label={`Switch to ${alternateLabel}`}
->
-  <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-    ></path>
-  </svg>
-  {alternateLabel}
-</a>
+<div class="relative">
+  <a
+    href={alternatePath}
+    class="inline-flex items-center justify-center w-20 h-10 rounded-full bg-komako-light hover:bg-komako-warm transition-all duration-300 border border-komako-cozy hover:border-accent-rose shadow-sm hover:shadow-md"
+    aria-label={`Switch to ${lang === 'en' ? 'Japanese' : 'English'}`}
+  >
+    <div class="flex items-center space-x-1">
+      <span class={`text-sm font-bold transition-colors ${lang === 'en' ? 'text-accent-rose' : 'text-komako-soft'}`}>
+        EN
+      </span>
+      <div class="w-0.5 h-4 bg-komako-cozy"></div>
+      <span class={`text-sm font-bold transition-colors ${lang === 'ja' ? 'text-accent-rose' : 'text-komako-soft'}`}>
+        JA
+      </span>
+    </div>
+    
+    <!-- Toggle indicator -->
+    <div class={`absolute top-1 bottom-1 w-8 rounded-full bg-accent-rose/20 backdrop-blur-sm transition-transform duration-300 ${lang === 'en' ? 'left-1 translate-x-0' : 'left-1 translate-x-10'}`}>
+    </div>
+  </a>
+</div>

@@ -1,0 +1,121 @@
+---
+import { tokenConfig } from '@config/token';
+
+// Only show this section if configured to do so
+if (!tokenConfig.launch.showCA) {
+  // Return empty if CA section is disabled
+}
+
+const { contractAddress, token } = tokenConfig;
+const isLaunched = contractAddress.isLaunched && contractAddress.address;
+---
+
+{tokenConfig.launch.showCA && (
+  <section class="bg-gradient-to-br from-komako-cream to-komako-light rounded-2xl p-8 border border-komako-warm shadow-lg">
+    <div class="text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-accent-rose/10 rounded-full mb-6">
+        <svg class="w-8 h-8 text-accent-rose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+        </svg>
+      </div>
+      
+      <h3 class="text-2xl font-serif font-bold text-komako-eyes mb-4">
+        {token.symbol} Token
+      </h3>
+      
+      <p class="text-komako-soft mb-6 max-w-md mx-auto">
+        Join the Komako community with our {token.network} token. Authentic, community-driven, and celebrating our beloved Scottish Fold.
+      </p>
+      
+      {isLaunched ? (
+        <div class="space-y-4">
+          <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-komako-cozy">
+            <p class="text-sm text-komako-soft mb-2 font-medium">Contract Address</p>
+            <div class="flex items-center justify-between bg-komako-light rounded-lg p-3">
+              <code class="text-sm text-komako-eyes font-mono break-all">{contractAddress.address}</code>
+              <button 
+                onclick={`navigator.clipboard.writeText('${contractAddress.address}')`}
+                class="ml-3 p-2 rounded-lg bg-accent-rose hover:bg-accent-pink text-white transition-colors"
+                title="Copy to clipboard"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap justify-center gap-3">
+            {tokenConfig.trading.dexscreener && (
+              <a 
+                href={tokenConfig.trading.dexscreener} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="btn-secondary text-sm"
+              >
+                DexScreener
+              </a>
+            )}
+            {tokenConfig.trading.jupiter && (
+              <a 
+                href={tokenConfig.trading.jupiter} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="btn-primary text-sm"
+              >
+                Buy on Jupiter
+              </a>
+            )}
+            {tokenConfig.trading.birdeye && (
+              <a 
+                href={tokenConfig.trading.birdeye} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="btn-secondary text-sm"
+              >
+                Birdeye
+              </a>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-komako-cozy">
+          <div class="inline-flex items-center text-komako-soft mb-3">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="font-medium">Token Coming Soon</span>
+          </div>
+          <p class="text-sm text-komako-cozy">
+            The {token.symbol} token will be launching soon on {token.network}. Stay tuned for the official announcement!
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<script>
+  // Copy to clipboard functionality
+  document.addEventListener('click', (e) => {
+    const button = e.target.closest('button[onclick*="clipboard"]');
+    if (button) {
+      e.preventDefault();
+      const address = button.getAttribute('onclick').match(/'([^']+)'/)[1];
+      navigator.clipboard.writeText(address).then(() => {
+        // Show brief success feedback
+        const originalText = button.innerHTML;
+        button.innerHTML = `
+          <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        `;
+        button.classList.add('bg-green-500');
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.classList.remove('bg-green-500');
+        }, 2000);
+      });
+    }
+  });
+</script>

@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import GalleryGrid from '@components/GalleryGrid.astro';
 import Lightbox from '@components/Lightbox.astro';
+import ContractSection from '@components/ContractSection.astro';
 import { getPhotos } from '@lib/content';
 
 const photos = await getPhotos();
@@ -74,8 +75,11 @@ const preloadImages = featuredPhotos.slice(0, 6).map(photo => photo.image);
       )}
     </section>
 
+    <!-- Token Section -->
+    <ContractSection />
+
     <!-- Stats Section -->
-    <section class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-komako-light/50 shadow-md">
+    <section class="mt-20 bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-komako-light/50 shadow-md">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div class="space-y-2">
           <div class="text-3xl font-serif font-bold text-accent-rose">{photos.length}</div>

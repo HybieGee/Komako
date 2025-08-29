@@ -41,4 +41,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-For a complete list of changes, see the [commit history](https://github.com/yourusername/komako/commits/main).
+For a complete list of changes, see the git commit history.
