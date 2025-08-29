@@ -12,23 +12,91 @@ const featuredPhotos = photos.slice(0, 20);
   title="Komako Gallery - Scottish Fold Cat Photography"
   description="A beautiful gallery celebrating Komako, a Scottish Fold cat born March 26, 2021. Browse photos capturing her daily life and adorable moments."
 >
-  <div class="container py-8">
-    <header class="mb-8 text-center">
-      <h1 class="text-4xl font-bold">Komako's Gallery</h1>
-      <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">
-        Capturing moments with my Scottish Fold companion
-      </p>
-    </header>
-    
-    <GalleryGrid photos={featuredPhotos} />
-    
-    {photos.length > 20 && (
-      <div class="mt-12 text-center">
-        <a href="/timeline" class="btn-primary">
-          View all photos in timeline
-        </a>
+  <div class="container py-12">
+    <!-- Hero Section -->
+    <div class="text-center mb-16 relative">
+      <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4">
+        <div class="w-24 h-24 bg-gradient-to-br from-accent-pink to-accent-rose rounded-full opacity-20 kawaii-float"></div>
       </div>
-    )}
+      
+      <div class="relative z-10">
+        <div class="inline-block mb-6">
+          <div class="text-8xl kawaii-bounce mb-4">🐱</div>
+          <div class="flex justify-center space-x-2 mb-4">
+            <span class="text-2xl">✨</span>
+            <span class="text-2xl">🌸</span>
+            <span class="text-2xl">💕</span>
+          </div>
+        </div>
+        
+        <h1 class="text-6xl font-kawaii font-bold text-komako-eyes mb-4 tracking-wide">
+          Welcome to
+          <span class="bg-gradient-to-r from-accent-rose to-accent-pink bg-clip-text text-transparent">
+            Komako's
+          </span>
+          World
+        </h1>
+        
+        <div class="max-w-2xl mx-auto">
+          <p class="text-xl text-komako-soft font-medium mb-2">
+            🌟 Scottish Fold Princess • Born March 26, 2021 🌟
+          </p>
+          <p class="text-lg text-komako-cozy leading-relaxed">
+            A cozy corner of the internet celebrating the daily adventures, 
+            adorable moments, and endless cuteness of our beloved furry family member
+          </p>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-4 mt-8">
+          <a href="#gallery" class="btn-primary">
+            <span class="mr-2">📸</span>
+            Explore Photos
+          </a>
+          <a href="/about" class="btn-secondary">
+            <span class="mr-2">💕</span>
+            Meet Komako
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="mb-16">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-kawaii font-bold text-komako-eyes mb-2">Latest Moments</h2>
+        <p class="text-komako-soft">Recent captures of our Scottish Fold princess</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto mt-4 rounded-full"></div>
+      </div>
+      
+      <GalleryGrid photos={featuredPhotos} />
+      
+      {photos.length > 20 && (
+        <div class="text-center mt-12">
+          <a href="/timeline" class="btn-primary text-lg px-8 py-4">
+            <span class="mr-2">⏰</span>
+            View Complete Timeline
+          </a>
+        </div>
+      )}
+    </section>
+
+    <!-- Stats Section -->
+    <section class="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-komako-light/50 shadow-lg">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="space-y-2">
+          <div class="text-4xl font-kawaii font-bold text-accent-rose">{photos.length}</div>
+          <div class="text-komako-soft font-medium">Precious Moments</div>
+        </div>
+        <div class="space-y-2">
+          <div class="text-4xl font-kawaii font-bold text-accent-rose">3+</div>
+          <div class="text-komako-soft font-medium">Years of Joy</div>
+        </div>
+        <div class="space-y-2">
+          <div class="text-4xl font-kawaii font-bold text-accent-rose">∞</div>
+          <div class="text-komako-soft font-medium">Cuddles & Purrs</div>
+        </div>
+      </div>
+    </section>
   </div>
   
   <Lightbox />

@@ -7,7 +7,13 @@
       "Bash(git commit:*)",
       "Bash(git config:*)",
       "Bash(git remote add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "WebFetch(domain:x.com)",
+      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
+      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
+      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
+      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)",
+      "Read(C:\\Users\\Kimberly\\Pictures\\Input/**)"
     ],
     "deny": [],
     "ask": []

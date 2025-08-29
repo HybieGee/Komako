@@ -5,21 +5,40 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Georgia', 'serif'],
+        sans: ['Nunito', 'Poppins', 'system-ui', 'sans-serif'],
+        serif: ['Crimson Text', 'Georgia', 'serif'],
+        kawaii: ['Comfortaa', 'Nunito', 'sans-serif'],
       },
       colors: {
+        // Komako's cream/beige color palette
+        komako: {
+          cream: '#F7F3E9',
+          light: '#F0EAD6',
+          fur: '#E8DCC0',
+          warm: '#DDD1B0',
+          cozy: '#D4C4A0',
+          soft: '#C9B583',
+          nose: '#F8BBD9',
+          blush: '#F4A2C6',
+          eyes: '#8B4513',
+        },
         primary: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
+          50: '#FDF8F3',
+          100: '#F7F3E9',
+          200: '#F0EAD6',
+          300: '#E8DCC0',
+          400: '#DDD1B0',
+          500: '#D4C4A0',
+          600: '#C9B583',
+          700: '#B8A374',
+          800: '#9D8960',
+          900: '#7D6B4A',
+        },
+        accent: {
+          pink: '#F8BBD9',
+          rose: '#F4A2C6',
+          peach: '#FDD5B8',
+          cream: '#FFF8F0',
         },
       },
       animation: {

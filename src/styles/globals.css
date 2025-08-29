@@ -1,16 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Comfortaa:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --color-bg: 255 255 255;
-    --color-text: 17 24 39;
+    --color-bg: 247 243 233; /* komako-cream */
+    --color-text: 77 66 47; /* warm brown */
+    --shadow-komako: 0 4px 20px rgba(196, 180, 131, 0.15);
+    --gradient-komako: linear-gradient(135deg, #F7F3E9 0%, #F0EAD6 100%);
   }
 
   .dark {
-    --color-bg: 17 24 39;
-    --color-text: 243 244 246;
+    --color-bg: 61 54 42; /* darker warm brown */
+    --color-text: 240 234 214; /* komako-light */
   }
 
   html {
@@ -18,45 +22,84 @@
   }
 
   body {
-    @apply bg-white text-gray-900 transition-colors dark:bg-gray-900 dark:text-gray-100;
+    @apply bg-komako-cream text-komako-eyes font-sans transition-colors;
+    background: var(--gradient-komako);
+    min-height: 100vh;
+  }
+
+  .dark body {
+    @apply bg-komako-eyes text-komako-light;
+    background: linear-gradient(135deg, #3D362A 0%, #4D4234 100%);
   }
 
   ::selection {
-    @apply bg-primary-200 text-primary-900 dark:bg-primary-800 dark:text-primary-100;
+    @apply bg-accent-pink text-komako-eyes;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+    @apply outline-none ring-2 ring-accent-rose ring-offset-2 ring-offset-komako-cream;
   }
 }
 
 @layer components {
   .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-6xl px-4 sm:px-6 lg:px-8;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium font-kawaii transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-rose focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 shadow-lg hover:shadow-xl;
   }
 
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600;
+    @apply btn bg-gradient-to-r from-accent-rose to-accent-pink text-white hover:from-accent-pink hover:to-accent-rose transform hover:scale-105;
   }
 
   .btn-secondary {
-    @apply btn bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600;
+    @apply btn bg-komako-light text-komako-eyes hover:bg-komako-warm border-2 border-komako-cozy hover:border-accent-rose;
   }
 
   .card {
-    @apply rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg dark:bg-gray-800;
+    @apply rounded-3xl bg-white/80 backdrop-blur-sm p-6 transition-all duration-300 hover:shadow-xl border border-komako-light/50;
+    box-shadow: var(--shadow-komako);
+  }
+
+  .dark .card {
+    @apply bg-komako-eyes/20 border-komako-soft/30;
   }
 
   .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-komako-light text-komako-eyes border border-komako-cozy;
+  }
+
+  .nav-link {
+    @apply flex items-center space-x-2 px-3 py-2 text-sm font-kawaii font-medium text-komako-eyes hover:text-accent-rose transition-all duration-300 hover:bg-komako-light/50 rounded-full;
+  }
+
+  .footer-link {
+    @apply inline-flex items-center text-sm font-kawaii font-medium text-komako-soft hover:text-accent-rose transition-colors duration-300;
   }
 
   .loading-skeleton {
-    @apply animate-pulse rounded bg-gray-200 dark:bg-gray-700;
+    @apply animate-pulse rounded bg-komako-light dark:bg-komako-soft;
+  }
+
+  /* Kawaii animations */
+  .kawaii-bounce {
+    animation: kawaii-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes kawaii-bounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .kawaii-float {
+    animation: kawaii-float 3s ease-in-out infinite;
+  }
+
+  @keyframes kawaii-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(2deg); }
   }
 }
 

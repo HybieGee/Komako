@@ -76,23 +76,44 @@ const socialImageURL = new URL(image, Astro.site);
     </script>
   </head>
   <body class={className}>
-    <header class="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/95 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
-      <nav class="container flex h-16 items-center justify-between">
-        <a href="/" class="flex items-center space-x-2">
-          <span class="text-2xl">🐱</span>
-          <span class="text-xl font-semibold">Komako</span>
+    <header class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b-2 border-komako-light shadow-sm">
+      <nav class="container flex h-20 items-center justify-between">
+        <a href="/" class="flex items-center space-x-3 group">
+          <div class="relative">
+            <div class="w-12 h-12 bg-gradient-to-br from-accent-pink to-accent-rose rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+              <span class="text-2xl">🐱</span>
+            </div>
+            <div class="absolute -top-1 -right-1 w-4 h-4 bg-accent-rose rounded-full animate-pulse"></div>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-2xl font-kawaii font-bold text-komako-eyes tracking-wide">Komako</span>
+            <span class="text-xs text-komako-soft font-medium -mt-1">Scottish Fold Princess</span>
+          </div>
         </a>
         
-        <div class="flex items-center space-x-6">
-          <a href="/" class="hover:text-primary-600 dark:hover:text-primary-400">Gallery</a>
-          <a href="/timeline" class="hover:text-primary-600 dark:hover:text-primary-400">Timeline</a>
-          <a href="/albums" class="hover:text-primary-600 dark:hover:text-primary-400">Albums</a>
-          <a href="/journal" class="hover:text-primary-600 dark:hover:text-primary-400">Journal</a>
-          <a href="/about" class="hover:text-primary-600 dark:hover:text-primary-400">About</a>
-          <a href="/search" class="hover:text-primary-600 dark:hover:text-primary-400">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+        <div class="flex items-center space-x-8">
+          <a href="/" class="nav-link">
+            <span class="text-lg">🏠</span>
+            <span class="hidden sm:inline">Gallery</span>
+          </a>
+          <a href="/timeline" class="nav-link">
+            <span class="text-lg">⏰</span>
+            <span class="hidden sm:inline">Timeline</span>
+          </a>
+          <a href="/albums" class="nav-link">
+            <span class="text-lg">📸</span>
+            <span class="hidden sm:inline">Albums</span>
+          </a>
+          <a href="/journal" class="nav-link">
+            <span class="text-lg">📖</span>
+            <span class="hidden sm:inline">Journal</span>
+          </a>
+          <a href="/about" class="nav-link">
+            <span class="text-lg">💕</span>
+            <span class="hidden sm:inline">About</span>
+          </a>
+          <a href="/search" class="nav-link">
+            <span class="text-lg">🔍</span>
           </a>
           <LangSwitcher lang={lang} />
           <ThemeToggle />
@@ -104,20 +125,40 @@ const socialImageURL = new URL(image, Astro.site);
       <slot />
     </main>
     
-    <footer class="mt-20 border-t border-gray-200 dark:border-gray-700">
-      <div class="container py-8">
-        <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-          <p class="text-sm text-gray-600 dark:text-gray-400">
-            © 2025 Komako Gallery. Made with love for Komako 🐾
-          </p>
-          <div class="flex space-x-4">
-            <a href="/sitemap-index.xml" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+    <footer class="mt-20 bg-white/60 backdrop-blur-sm border-t-2 border-komako-light">
+      <div class="container py-12">
+        <div class="text-center space-y-6">
+          <div class="flex justify-center space-x-2 text-3xl">
+            <span class="kawaii-float" style="animation-delay: 0s;">🐾</span>
+            <span class="kawaii-float" style="animation-delay: 0.5s;">💕</span>
+            <span class="kawaii-float" style="animation-delay: 1s;">🌸</span>
+          </div>
+          
+          <div class="max-w-md mx-auto">
+            <p class="text-komako-soft font-kawaii font-medium mb-2">
+              Made with endless love for our Scottish Fold princess
+            </p>
+            <p class="text-sm text-komako-cozy">
+              © 2025 Komako's World • Spreading joy one photo at a time 
+            </p>
+          </div>
+          
+          <div class="flex flex-wrap justify-center gap-6">
+            <a href="https://x.com/OnlyKomako" class="footer-link">
+              <span class="mr-1">🐦</span>
+              Twitter
+            </a>
+            <a href="/sitemap-index.xml" class="footer-link">
+              <span class="mr-1">🗺️</span>
               Sitemap
             </a>
-            <a href="https://github.com/yourusername/komako" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+            <a href="https://github.com/HybieGee/Komako" class="footer-link">
+              <span class="mr-1">💻</span>
               GitHub
             </a>
           </div>
+          
+          <div class="w-32 h-1 bg-gradient-to-r from-accent-rose to-accent-pink mx-auto rounded-full"></div>
         </div>
       </div>
     </footer>
